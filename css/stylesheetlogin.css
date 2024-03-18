@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    height: 800px;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    text-align: center;
+    
+}
+
+body {
+    background-image: url('../img/BackgroundLogin.jpg');
+    background-size: cover;
+}
+
+#LoginButton {
+    position: absolute;
+    left: 45%;
+    justify-content: center;
+    
+}
+
+.registerlink {
+    color:blue;
+}

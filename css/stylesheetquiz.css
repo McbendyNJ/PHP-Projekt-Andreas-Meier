@@ -1,0 +1,18 @@
+.bluetext {
+    color:blue;
+}
+
+.redtext {
+    color:red;
+}   
+
+#buttons {
+    position: absolute;
+    bottom:5%;
+}
+
+#onlinestatus {
+    word-spacing: 30px;
+}
+
+

@@ -1,0 +1,9 @@
+.homebox {
+    height: 100%;
+    width: 70%;
+    position: absolute;
+    left:15%;
+    background-color: white;
+    text-align: center;
+}
+

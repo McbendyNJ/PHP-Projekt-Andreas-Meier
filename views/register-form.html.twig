@@ -1,0 +1,54 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <h1 class="text-center">Registrieren</h1>
+        <div class="row">
+            <form method="POST" >
+                {% if user %} <!-- form spoffing -->
+                <input type="hidden" id="_method" name="_method" value="PUT" />  <!-- id für javascript, name für php-->
+                {% endif %}
+                <div class="mb-3">
+                    <label for="Firstname" class="form-label">Vorname</label>
+                    <input type="text" class="form-control" id="Firstname" name="Firstname" value="{{ user.firstname }}">
+                    {% if error["Firstname"] %}
+                        <span class="fw-bold text-danger">{{ error["Firstname"] | raw }}</span>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="Lastname" class="form-label">Nachname</label>
+                    <input type="text" class="form-control" id="Lastname" name="Lastname" value="{{ user.lastname }}">
+                    {% if error["Lastname"] %}
+                        <span class="fw-bold text-danger">{{ error["Lastname"] | raw }}</span>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="Username" class="form-label">Benutzernamen</label>
+                    <input type="text" class="form-control" id="Username" name="Username" value="{{ user.username }}">
+                    {% if error["Username"] %}
+                        <span class="fw-bold text-danger">{{ error["Username"] | raw }}</span>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="Email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="Email" name="Email" value="{{ user.email }}">
+                    {% if error["Email"] %}
+                        <span class="fw-bold text-danger">{{ error["Email"] | raw }}</span>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="Password" class="form-label">Passwort</label>
+                    <input type="password" class="form-control" id="Password" name="Password" value="{{ user.password }}">
+                    {% if error["Password"] %}
+                        <span class="fw-bold text-danger">{{ error["Password"] | raw }}</span>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+           <!-- <div class="col-md-2">
+                <a href="/movies" class="mt-3 btn-warning">Alle Filme</a>
+            </div>
+            <div class="col-md-2">
+                <a href="/actors" class="mt-3 btn-warning">Alle Schauspieler azeigen</a>
+            </div> -->
+        </div>
+{% endblock %}

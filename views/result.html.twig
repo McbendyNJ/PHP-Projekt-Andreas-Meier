@@ -1,0 +1,43 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Resultat{% endblock %}
+
+{% block style %}<link href="../css/stylesheetresult.css" rel="stylesheet"> {% endblock %}
+
+{% block content %}
+    <div class="resultbox">
+        <h1 class="text-center">Resultat</h1>
+        <br>
+        
+        {% set correctanswer = 0 %}
+        {% set countedQuestions = [] %}
+        {% for answer in selectedAnswers %}
+            {% if answer.solution == 1 and answer.questionid not in countedQuestions %}
+                {% set correctanswer = correctanswer + 1 %}
+                {% set countedQuestions = countedQuestions|merge([answer.questionid]) %}
+            {% endif %}
+        {% endfor %}
+        <div class="result-box">
+            <p>Du hast {{correctanswer}} Fragen von {{ questionscount }} richtig beantwortet!</p>
+            {% if correctanswer != questionscount and correctanswer != 0 %}
+                <img src="../img/studyman.png" alt="Studymanpng">
+                <br>
+                <p>Du hast ein paar Fragen falsch beantwortet, also lern noch etwas mehr!</p>
+            {% endif %}
+            {% if correctanswer == questionscount %}
+                <img src="../img/happyLukas.png" alt="Happymanpng">
+                <br>
+                <p>Super, du hast alle Fragen richtig beantwortet!</p>
+            {% endif %}
+            {% if correctanswer == 0 %}
+                <img src="../img/Lukassad.png" alt="Sadmanpng">
+                <br>
+                <p>Du hast keine Frage richtig beantwortet. Streng dich noch mehr an beim lernen!!!</p>
+            {% endif %}
+            <a href="/allquizes" class="btn btn-primary">Zurück zur Übersicht</a>
+        </div>
+        
+        
+        
+    </div>
+{% endblock %}

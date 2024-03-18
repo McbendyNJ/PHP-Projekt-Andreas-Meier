@@ -1,0 +1,88 @@
+{% extends "layout.html.twig" %}
+
+{% block title %} Übersicht{% endblock %}
+
+{% block style %}<link href="../css/stylesheetquiz.css" rel="stylesheet"> {% endblock %}
+
+{% block content %}
+        <h1 class="text-center">Übersicht Quizze</h1>
+        <br>
+        <div class="alert alert-light" role="alert">
+            Damit ein Quiz als spielbar ist, muss man folgende Bedingungen erfüllen:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Der Onlinestatus vom Quiz muss "öffentlich" eingestellt sein.<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Das Quiz muss mindestens eine Frage mit zwei Antwortmöglichkeiten besitzen.<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Einer der zwei Antworten muss korrekt sein.<br><br>
+            Informationen zu den Icons:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Das grüne Icon steht für die Bearbeitung.<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Das gelbe Icon steht für die Fragen hinzufügen.<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Das rote Icon steht für das Löschen.<br>
+
+        </div>
+          
+        <br>
+        <div class="row">
+            {% set userhasquizes = false %}
+            {% for quiz in quizes %}
+                {% if quiz.userid == session.user.id %}
+                {% set userhasquizes = true %}
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ quiz.getQuizname() }}</h5>
+                            <p class="card-text">{{ quiz.getDescription() }}</p>
+                            <p id="onlinestatus">Onlinestatus: {% if quiz.onlinestatus == 1 %}<span class="bluetext"><i class="bi bi-wifi"></i></span>{% elseif quiz.onlinestatus == 0 %}<span class="redtext"><i class="bi bi-wifi-off"></i></span>{% endif %}</p>
+                            <br>
+                            <div class="btn-toolbar" id="buttons" role="toolbar" aria-label="Toolbar with button groups" style="position: absolute; bottom:6%; align-items:center;">
+                                <div class="btn-group me-2" role="group" aria-label="First group">
+                                    <form>
+                                        <a href="/quizes/{{ quiz.id }}" class="btn btn-success"><i class="bi bi-pencil-square"></i></a>
+                                    </form>
+                                </div>
+                                <div class="btn-group me-2" role="group" aria-label="Second group">
+                                    <form method="POST" action="/quizes/{{ quiz.id }}">
+                                        <input type="hidden" name="_method" id="_method" value="ADDQUESTIONS">
+                                        <button class="btn btn-warning"><i class="bi bi-clipboard-plus"></i></button>  
+                                    </form>
+                                </div>
+                                <div class="btn-group" role="group" aria-label="Third group">
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ quiz.id }}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="staticBackdrop{{ quiz.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{ quiz.id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel{{ quiz.id }}">Quiz Löschen</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Möchten Sie das Quiz <b>{{ quiz.getQuizname() }}</b> wirklich löschen?<br><br>
+                                            Das Löschen kann nicht rückgängig gemacht werden.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                            <form method="POST" action="/quizes/{{ quiz.id }}">
+                                                <input type="hidden" name="_method" id="_method" value="DELETE">
+                                                <!-- Lösung 1: <input type="submit" class="btn btn-danger" value="löschen">-->
+                                                <!-- Lösung 2: --><button class="btn btn-danger">Löschen</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if userhasquizes == false %}
+                <p>Keine Quize vorhanden</p>
+            {% endif %}
+        </div>
+        <a href="/quizes/create" class="mt-3 btn btn-primary">Neues Quiz erfassen</a>
+{% endblock %}
+
+
+
+
+

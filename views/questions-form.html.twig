@@ -1,0 +1,29 @@
+{% extends "layout.html.twig" %}
+
+
+{% block content %}
+{{ session.quiz.id }}
+    <h1 class="text-center">Fragen</h1>
+    <div class="row">
+        <form method="POST" action="{% if question or _method == "PUT" %}/questions/{{ question.id ?? id }}{% else %}/questions{% endif %}">
+            <input type="hidden" id="QuizId" name="QuizId" value="{{ session.quizid }}">
+            <p>{{ session.quiz.id }}</p>
+            {% if question %}
+                <input type="hidden" id="_method" name="_method" value="PUT" />
+            {% endif %}
+            <!--<input type="hidden" id="QuestionId" name="QuestionId" value="{{ question.id }}" /> -->
+            <div class="mb-3">
+                <label for="Question" class="form-label">Frage</label>
+                <input type="text" class="form-control" id="Question" name="Question" value="{{ question.question }}">
+                {% if error["Question"] %}
+                        <span class="fw-bold text-danger">{{ error["Question"] | raw }}</span>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Eingabe bestätigen</button>
+        </form>
+    </div>
+    <br>
+    <a href="/questions" type="button" class="btn btn-secondary">Zurück</a>
+{% endblock %}
+
+

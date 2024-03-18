@@ -1,0 +1,33 @@
+{% extends "layout.html.twig" %}
+
+
+{% block content %}
+    <h1 class="text-center">Quize</h1>
+    <div class="row">
+        <form method="POST" action="{% if quiz or _method == "PUT" %}/quizes/{{ quiz.id ?? id }}{% else %}/quizes{% endif %}">
+            <input type="hidden" id="UserId" name="UserId" value="{{ session.user.id }}">
+            
+            {% if quiz %}
+                <input type="hidden" id="_method" name="_method" value="PUT" />
+            {% endif %}
+            <div class="mb-3">
+                <label for="Quizname" class="form-label">Quizname</label>
+                <input type="text" class="form-control" id="Quizname" name="Quizname" value="{{ quiz.quizname }}">
+                {% if error["Quizname"] %}
+                        <span class="fw-bold text-danger">{{ error["Quizname"] | raw }}</span>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="Description" class="form-label">Description</label>
+                <input type="text" class="form-control" id="Description" name="Description" value="{{ quiz.description }}">
+            </div>
+            <div>
+                <label for="Solution" class="form-label">Quiz auf Öffentlich setzen</label>
+                <input type="hidden" id="Onlinestatus" name="Onlinestatus" value="0">
+                <input class="form-check-input" type="checkbox" value="1" id="Onlinestatus" name="Onlinestatus" {% if quiz.onlinestatus == 1 %}checked{% endif %}>
+            </div>
+            <button type="submit" class="btn btn-primary">Eingabe bestätigen</button>
+        </form>
+    </div>
+    <a href="/quizes" class="mt-3 btn btn-secondary">Zurück</a>
+{% endblock %}

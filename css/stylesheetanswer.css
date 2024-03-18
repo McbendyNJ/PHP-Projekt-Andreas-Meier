@@ -1,0 +1,20 @@
+/*#answerAlert {
+    position: absolute;
+    top: 50%;
+    left: 15%;
+} */
+
+.greentext {
+    color: green;
+}
+
+.redtext {
+    color: red;
+}
+
+#lösung {
+    word-spacing: 30px;
+    /*word-spacing: 150px;
+    */
+}
+

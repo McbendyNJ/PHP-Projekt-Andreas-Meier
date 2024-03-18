@@ -1,0 +1,66 @@
+{% extends "layout.html.twig" %}
+
+{% block title %} Benutzerprofil bearbeiten {% endblock %}
+
+{% block style %}<link href="../css/stylesheetuserform.css" rel="stylesheet"> {% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Benutzerprofil bearbeiten:</h1>
+    <p class="text-center">Um die geänderten Benutzerdaten zu speichern müssen sie Ihr aktuelles Password eingeben.</p>
+        <div class="row">
+            <form method="POST" action="{% if user or _method == "PUT" %}/user/{{ user.id ?? id }}{% else %}/user{% endif %}">
+                {% if user %} <!-- form spoffing -->
+                    <input type="hidden" id="_method" name="_method" value="PUT" />  <!-- id für javascript, name für php-->
+                {% endif %}
+                <div class="mb-3">
+                    <label for="Firstname" class="form-label">Vorname</label>
+                    <input type="text" class="form-control" id="Firstname" name="Firstname" value="{{ user.firstname }}">
+                    {% if error["Firstname"] %}
+                        <span class="fw-bold text-danger">{{ error["Firstname"] | raw }}</span>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="Lastname" class="form-label">Nachname</label>
+                    <input type="text" class="form-control" id="Lastname" name="Lastname" value="{{ user.lastname }}">
+                    {% if error["Lastname"] %}
+                        <span class="fw-bold text-danger">{{ error["Lastname"] | raw }}</span>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="Username" class="form-label">Benutzernamen</label>
+                    <input type="text" class="form-control" id="Username" name="Username" value="{{ user.username }}">
+                    {% if error["Username"] %}
+                        <span class="fw-bold text-danger">{{ error["Username"] | raw }}</span>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="Email" class="form-label">Email</label>
+                    <input type="text" class="form-control" id="Email" name="Email" value="{{ user.email }}">
+                    {% if error["Email"] %}
+                        <span class="fw-bold text-danger">{{ error["Email"] | raw }}</span>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="currentPassword" class="form-label">Aktuelles Passwort</label>
+                    <input type="password" class="form-control" id="currentPassword" name="currentPassword">
+                    {% if error["currentPassword"] %}
+                        <span class="fw-bold text-danger">{{ error["currentPassword"] | raw }}</span>
+                    {% endif %}
+                </div>
+                <div>
+                   
+                    <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Passwort ändern
+                    </button>
+                </div>
+                <br>
+                <div class="collapse" id="collapseExample">
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">Neues Passwort</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" value="{{ user.newpassword }}">
+                    </div>
+                  </div>
+                <button type="submit" class="btn btn-primary">Eingabe bestätigen</button>
+            </form>
+        </div>
+{% endblock %}

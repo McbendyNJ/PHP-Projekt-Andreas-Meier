@@ -1,0 +1,34 @@
+{% extends "layout.html.twig" %}
+
+{% block title %} Übersicht{% endblock %}
+
+{% block style %}<script type "text/javascript" src="../javascript/Searchscript.js"></script>{% endblock %}
+
+{% block content %}
+        <h1 class="text-center">Spielen Sie Ein Quiz!</h1>
+        <br>
+        <!--
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        -->
+        <!--
+        <form>
+            <input type="text" size="30" onkeyup="showResult(this.value)">
+            <div id="livesearch"></div>
+        </form> Ich hätte gerne eine Suchfunktion, die mir die Quiznamen anzeigt, sobald ich anfange zu tippen. Ich konnte es aber nicht vollbringen ;(
+        --> 
+        <br>
+        <div class="row">
+            {% for quiz in quizes %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ quiz.getQuizname() }}</h5>
+                        <p class="card-text">{{ quiz.getDescription() }}</p>
+                        <a href="/quizes/play/{{ quiz.id }}" class="btn btn-success">Spielen</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+{% endblock %}

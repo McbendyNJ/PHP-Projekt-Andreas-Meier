@@ -1,0 +1,51 @@
+{% block setvalue %}{% set imagedefault = 1 %}{% endblock %}
+{% extends "layout.html.twig" %}
+
+{% block title %}Playing a Quiz!{% endblock %}
+
+{% block style %}<link href="../../css/stylesheetplayquiz.css" rel="stylesheet">{% endblock %}
+
+
+
+
+{% block content %}
+        <h1 class="text-center">Playing a Quiz!</h1>
+        <br>
+        <div class="row">
+            <form method="POST" action="/result">
+                {% set questionscount = 0 %}
+                {% for question in questions %}
+                    {% set answersForQuestion = answers|filter(answer => answer.questionid == question.id) %}
+                    {% if answersForQuestion|length > 0 %}
+                        {% set correctAnswersForQuestion = answers|filter(answer => answer.questionid == question.id and answer.solution == 1) %}
+                        {% if correctAnswersForQuestion|length > 0 %}
+                            {% set questionscount = questionscount + 1 %}
+                            <div class="card" style="width: 96rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ question.question }}</h5>
+                                    <p class="card-text">
+                                        <ul class="list-group list-group-horizontal" id="AnswerBox">
+                                        {% for answer in answers %}
+                                            {% if question.id == answer.questionid %}
+                                                <li class="list-group-item">
+                                                    <input class="form-check-input me-1" type="checkbox" name="selectedanswers[]" value="{{ answer.id }}" id="firstCheckbox">
+                                                    <label class="form-check-label" for="Checkbox">{{ answer.answer }}</label>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %} 
+                                        </ul>
+                                    </p>     
+                                </div>
+                            </div>
+                            <br>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                
+                <input type="hidden" id="questionscount" name="questionscount" value="{{ questionscount }}">
+                <button class="btn btn-primary" name="submit">Resultat sehen</button>
+                <br>
+            </form>
+            
+        </div>
+{% endblock %}

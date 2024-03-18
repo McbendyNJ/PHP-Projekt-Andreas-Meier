@@ -1,0 +1,30 @@
+{% extends "layout.html.twig" %}
+
+
+{% block content %}
+    <h1 class="text-center">Antworten erstellen</h1>
+    <div class="row">
+        <form method="POST" action="{% if answer or _method == "PUT" %}/answers/{{ answer.id ?? id }}{% else %}/answers{% endif %}">
+            <input type="hidden" id="QuestionId" name="QuestionId" value="{{ session.questionid }}">
+            <p>{{ session.question.id }}</p>
+            {% if answer %}
+                <input type="hidden" id="_method" name="_method" value="PUT" />
+            {% endif %}
+            <div class="mb-3">
+                <label for="Answer" class="form-label">Antwort</label>
+                <input type="text" class="form-control" id="Answer" name="Answer" value="{{ answer.answer }}">
+                {% if error["Answer"] %}
+                        <span class="fw-bold text-danger">{{ error["Answer"] | raw }}</span><br><br>
+                {% endif %}
+                <br>
+                <label for="Solution" class="form-label">Lösung</label>
+                <input type="hidden" id="solution_{{ question.id }}" name="Solution" value="0">
+                <input class="form-check-input" type="checkbox" value="1" id="solution_{{ question.id }}" name="Solution" {% if answer.solution == 1 %}checked{% endif %}>
+            </div>
+            <button type="submit" class="btn btn-primary">Eingabe bestätigen</button>
+        </form>
+    </div>
+    <a href="/answers" class="mt-3 btn btn-secondary">Zurück</a>
+{% endblock %}
+
+

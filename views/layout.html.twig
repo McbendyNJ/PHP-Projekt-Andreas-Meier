@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="../css/stylesheetlayout.css" rel="stylesheet">
+    <link href="../../css/stylesheetlayout.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="icon" href="data:,">
+
+    {% block style %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+    {% block script %}{% endblock %}
+</head>
+<body>
+  {% if session.user %}
+    <nav class="navbar navbar-expand-lg" id="navbar" style="background-color:#0D67B5;">
+        <div class="container-fluid">
+          <a class="navbar-brand" ><img src="../img/Logotest1.jpeg" id="Logo" alt="Logo" onerror="this.onerror=null; this.src='../../img/Logotest1.jpeg'"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" id="navbartext" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" id="navbartext" aria-current="page" href="/quizes">Meine Quizze</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" id="navbartext" aria-current="page" href="/allquizes">Quizze Spielen</a>
+                </li>
+            </ul>
+            {% if session.user %}
+              <!--<form action="/logout" method="POST">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button class="btn btn-danger"><i class="bi bi-door-open-fill"></i></button>
+              </form> -->
+              <button class="btn btn-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-person-fill"></i></button>
+
+            
+            {% endif %}
+          </div>
+        </div>
+    </nav>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+      <div class="offcanvas-header">
+        <h3 class="offcanvas-title" id="offcanvasRightLabel">Benutzer Profil</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <p><b>Vorname:&nbsp;</b>{{session.user.firstname}}</p>
+        <p><b>Nachname:&nbsp;</b>{{session.user.lastname}}</p>
+        <p><b>Benutzernamen:&nbsp;</b>{{session.user.username}}</p>
+        <p><b>Email:&nbsp;</b>{{session.user.email}}</p>
+        <p class="d-inline-flex gap-1">
+          <!--<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#Profiledit" aria-expanded="false" aria-controls="Profiledit">
+            Benutzerdaten bearbeiten
+          </button>-->
+          <form>
+            <a href="/user/{{ session.user.id }}" class="btn btn-success">Benutzerprofil</a>
+          </form>
+        </p>
+        <div class="collapse" id="Profiledit">
+          <div class="card card-body">
+            <form method="POST">
+              <div class="mb-3">
+                <form action="upload.php" method="post" enctype="multipart/form-data">
+                  <label>Profilbild:</label>
+                  <input type="file" name="image">
+                  <input type="submit" name="submit">
+                </form>
+              </div>
+              <div class="mb-3">
+                <label for="Username" class="form-label">Benutzernamen</label>
+                <input type="text" class="form-control" id="Username" name="Username" value="{{ user.username }}">
+              </div>
+              <div class="mb-3">
+                <label for="Password" class="form-label">Vorheriges Passwort</label>
+                <input type="password" class="form-control" id="Password" name="Password" value="{{ user.password }}">
+              </div>
+              <div class="mb-3">
+                <label for="Password" class="form-label">Neues Passwort</label>
+                <input type="password" class="form-control" id="Password" name="Password" value="{{ user.password }}">
+              </div>
+            </form>
+          </div>
+          <br>
+        </div>
+        <form action="/logout" method="POST">
+          <input type="hidden" name="_method" value="DELETE">
+          <button class="btn btn-danger"><i class="bi bi-door-open-fill"></i>&nbsp;Logout</button>
+        </form>
+        <button class="btn btn-danger" id="deleteUserbtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ session.user.id }}">
+          Benutzer Löschen
+        </button>
+      </div>
+    </div>
+    <div class="modal fade" id="staticBackdrop{{ session.user.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{ session.user.id }}" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel{{ session.user.id }}">Benutzer Löschen</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  Möchten Sie Ihren Benutzerkonto wirklich löschen?<br><br>
+                  Das Löschen kann nicht rückgängig gemacht werden.
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                  <form method="POST" action="/user/{{ session.user.id }}">
+                      <input type="hidden" name="_method" id="_method" value="DELETE">
+                      <!-- Lösung 1: <input type="submit" class="btn btn-danger" value="löschen">-->
+                      <!-- Lösung 2: --><button class="btn btn-danger">Löschen</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+  {% endif %}
+    <div class="container">
+        <div class="row pt-4">
+            {% if session.successRedirect and ( "now"|date("U") - session.successRedirect_time < 5 ) %}
+                <div class="alert alert-success">
+                    <strong>{{ session.successRedirect.success }}</strong>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row pt-4">
+            {% if session.errorRedirect and ( "now"|date("U") - session.errorRedirect_time < 5 ) %}
+                <div class="alert alert-danger">
+                    <strong>{{ session.errorRedirect.error }}</strong>
+                </div>
+            {% endif %}
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+</body>
+</html>
